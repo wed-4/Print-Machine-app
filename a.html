@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Capture and Display</title>
+    <title>web版プリクラ（β版）</title>
 </head>
 <body>
-    <h1>Photo Capture and Display</h1>
+    <h1>web版プリクラ（β版）</h1>
     <video id="video" autoplay playsinline style="border: 1px solid black; width: 300px; height: auto;"></video>
     <canvas id="canvas" style="display: none;"></canvas>
     <h2>Captured Photo:</h2>
@@ -18,35 +18,33 @@
         const capturedImage = document.getElementById('capturedImage');
         const context = canvas.getContext('2d');
 
-        // カメラ映像を取得して表示
+        
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
                 video.srcObject = stream;
-
-                // カメラ準備後、写真を撮影して表示・送信
                 video.addEventListener('loadeddata', captureAndUpload, { once: true });
             })
             .catch(err => {
                 console.error('Error accessing the camera', err);
             });
 
-        // 写真を撮影して表示し、サーバーに送信
+        
         function captureAndUpload() {
-            // Canvasに映像を描画
+            
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // キャプチャした画像を表示
+            
             const imageDataUrl = canvas.toDataURL('image/jpeg');
             capturedImage.src = imageDataUrl;
             capturedImage.style.display = 'block';
 
-            // カメラストリームを停止
+            
             const stream = video.srcObject;
             stream.getTracks().forEach(track => track.stop());
 
-            // 写真をサーバーに送信
+            
             canvas.toBlob(blob => {
                 const formData = new FormData();
                 formData.append('photo', blob, 'photo.jpg');
