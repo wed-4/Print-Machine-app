@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Single Photo Capture</title>
+    <title>Photo Capture and Display</title>
 </head>
 <body>
-    <h1>Capturing Photo...</h1>
-    <video id="video" autoplay playsinline style="display: none;"></video>
+    <h1>Photo Capture and Display</h1>
+    <video id="video" autoplay playsinline style="border: 1px solid black; width: 300px; height: auto;"></video>
     <canvas id="canvas" style="display: none;"></canvas>
+    <h2>Captured Photo:</h2>
+    <img id="capturedImage" alt="Captured photo will appear here" style="border: 1px solid black; width: 300px; height: auto; display: none;">
 
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
+        const capturedImage = document.getElementById('capturedImage');
         const context = canvas.getContext('2d');
 
         // カメラ映像を取得して表示
@@ -20,18 +23,24 @@
             .then(stream => {
                 video.srcObject = stream;
 
-                // カメラ準備後、写真を撮影して送信
+                // カメラ準備後、写真を撮影して表示・送信
                 video.addEventListener('loadeddata', captureAndUpload, { once: true });
             })
             .catch(err => {
                 console.error('Error accessing the camera', err);
             });
 
-        // 写真を撮影してサーバーに送信
+        // 写真を撮影して表示し、サーバーに送信
         function captureAndUpload() {
+            // Canvasに映像を描画
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // キャプチャした画像を表示
+            const imageDataUrl = canvas.toDataURL('image/jpeg');
+            capturedImage.src = imageDataUrl;
+            capturedImage.style.display = 'block';
 
             // カメラストリームを停止
             const stream = video.srcObject;
@@ -48,11 +57,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    document.body.innerHTML = `<h1>${data.message}</h1>`;
+                    console.log('Photo uploaded:', data.message);
                 })
                 .catch(err => {
                     console.error('Error uploading the photo', err);
-                    document.body.innerHTML = `<h1>Error uploading the photo</h1>`;
                 });
             }, 'image/jpeg');
         }
