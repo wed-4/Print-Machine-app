@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Photo Capture</title>
+</head>
+<body>
+    <h1>Capturing Photo...</h1>
+    <video id="video" autoplay playsinline style="display: none;"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        // カメラ映像を取得して表示
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+
+                // カメラ準備後、写真を撮影して送信
+                video.addEventListener('loadeddata', captureAndUpload, { once: true });
+            })
+            .catch(err => {
+                console.error('Error accessing the camera', err);
+            });
+
+        // 写真を撮影してサーバーに送信
+        function captureAndUpload() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // カメラストリームを停止
+            const stream = video.srcObject;
+            stream.getTracks().forEach(track => track.stop());
+
+            // 写真をサーバーに送信
+            canvas.toBlob(blob => {
+                const formData = new FormData();
+                formData.append('photo', blob, 'photo.jpg');
+
+                fetch('http://127.0.0.1:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.body.innerHTML = `<h1>${data.message}</h1>`;
+                })
+                .catch(err => {
+                    console.error('Error uploading the photo', err);
+                    document.body.innerHTML = `<h1>Error uploading the photo</h1>`;
+                });
+            }, 'image/jpeg');
+        }
+    </script>
+</body>
+</html>
